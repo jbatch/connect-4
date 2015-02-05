@@ -5,6 +5,7 @@ var boardCanvas, tokenCanvas;
 var boardCtx, tokenCtx;
 var h, w;
 var p1Score, p2Score;
+var xOffset, yOffset;
 
 var following = false;
 
@@ -16,14 +17,19 @@ var token = {
 	radius: 20,
 	color: 'red',
 	draw: function(){
-		ctx.beginPath();
-		ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
-		ctx.closePath();
-		ctx.fillStyle = this.color;
-		ctx.fill();
+		// console.log('x: ' + this.x + 'y: ' + this.y);
+		tokenCtx.beginPath();
+		tokenCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+		tokenCtx.closePath();
+		tokenCtx.fillStyle = '#000';
+		tokenCtx.fill();
+
+		// tokenCtx.fillStyle = '#000';
+		// tokenCtx.fillRect(this.x, this.y, 10, 10);
 	},
 	clear: function(){
-
+		tokenCtx.fillStyle = '#FFF';
+		tokenCtx.fillRect(0, 0, w, h);
 	}
 };
 
@@ -40,9 +46,15 @@ jQuery(document).ready(function(){
 });
 
 function init() {
-	if(boardCanvas.getContext){
+	if(boardCanvas.getContext && tokenCanvas.getContext){
 		boardCtx = boardCanvas.getContext('2d');
 		tokenCtx = tokenCanvas.getContext('2d');
+
+		boardCtx.globalCompositeOperation = 'xor';
+
+		var rect = boardCanvas.getBoundingClientRect();
+		xOffset = rect.left;
+		yOffset = rect.top;
 
 		h = boardCanvas.height;
 		w = boardCanvas.width;
@@ -51,16 +63,22 @@ function init() {
 		p2Score = 0;
 
 		boardCanvas.addEventListener("mousemove", function(e){
-
+			token.clear();
+			token.x = e.clientX - xOffset;
+			token.y = e.clientY - yOffset;
+			token.draw();
 		});
 
 		boardCanvas.addEventListener("click", function(e){
-
+			console.log("click");
 		});
 
 		boardCanvas.addEventListener("mouseout", function(e){
 
 		});
+
+		tokenCtx.fillStyle = '#000';
+		tokenCtx.fillRect(20, 20, 20, 20);
 
 		drawBoard();
 	}
@@ -75,7 +93,7 @@ function drawBoard(){
 	boardCtx.fillRect(w * 0.10, h * 0.10, w * 0.8, h * 0.8);
 
 	//draw holes in board
-	boardCtx.fillStyle = "#FFFFFF";
+	boardCtx.fillStyle = "rgba(255, 255, 255, 1)";
 	for(var x = 0; x < COLS; x++){
 		for(var y = 0; y < ROWS; y++){
 			boardCtx.beginPath();
@@ -85,9 +103,9 @@ function drawBoard(){
 				padPercent * len,
 				0, //startAngle
 				Math.PI * 2,//endAngle
-				true//annticlockwise
+				false//annticlockwise
 				);
-
+			boardCtx.closePath();
 			boardCtx.fill();
 		}
 	}
