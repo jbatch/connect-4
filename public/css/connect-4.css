@@ -11,8 +11,16 @@ h1, p {
 	text-align: center;
 }
 
-#canvas {
-	/*width: 75%;
-	height: 50%;*/
+#boardCanvas {
+	z-index: 1;
+}
+
+#tokenCanvas {
+	z-index: 0;
+}
+
+#boardCanvas, #tokenCanvas {
 	border: 1px solid #000;
+	position: absolute;
+	left: 10%;
 }
