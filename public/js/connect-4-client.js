@@ -1,5 +1,6 @@
 var COLS = 7;
 var ROWS = 6;
+var padPercent = 0.055;
 
 jQuery(document).ready(function(){
 	canvas.width = $(window).width() * 0.75;
@@ -14,6 +15,7 @@ function drawBoard(){
 
 		var h = canvas.height;
 		var w = canvas.width;
+		var len = h > w ? w : h;
 	
 		ctx.fillStyle = "#0066FF"
 		ctx.fillRect(w * 0.10, h * 0.10, w * 0.8, h * 0.8);
@@ -25,7 +27,8 @@ function drawBoard(){
 
 				ctx.arc(0.1 * w + ((0.8 * w) / COLS) * (x + 0.5), //x
 					0.1 * h + ((0.8 * h) / ROWS) * (y + 0.5), //y
-					30, //radius
+					//((0.8 * len) - ((COLS + 1) * (padPerc * len))) / COLS, //radius
+					padPercent * len,
 					0, //startAngle
 					Math.PI * 2,//endAngle
 					true//annticlockwise

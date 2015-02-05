@@ -2,6 +2,10 @@ h1, p {
 	text-align: center;
 }
 
+#game {
+	width: 100%;
+}
+
 #canvasContainer {
 	width: 100%;
 	text-align: center;
