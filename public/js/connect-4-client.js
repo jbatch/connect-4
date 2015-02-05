@@ -7,21 +7,23 @@ var h, w;
 var p1Score, p2Score;
 var xOffset, yOffset;
 
-var following = false;
+var following = true;
+var animationTimer;
 
 var token = {
 	x: 0,
 	y: 0,
 	vx: 0,
 	vy: 0,
-	radius: 20,
+	radius: 30,
 	color: 'red',
+	distanceToFall: 0,
 	draw: function(){
 		// console.log('x: ' + this.x + 'y: ' + this.y);
 		tokenCtx.beginPath();
 		tokenCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
 		tokenCtx.closePath();
-		tokenCtx.fillStyle = '#000';
+		tokenCtx.fillStyle = this.color;
 		tokenCtx.fill();
 
 		// tokenCtx.fillStyle = '#000';
@@ -63,22 +65,27 @@ function init() {
 		p2Score = 0;
 
 		boardCanvas.addEventListener("mousemove", function(e){
-			token.clear();
-			token.x = e.clientX - xOffset;
-			token.y = e.clientY - yOffset;
-			token.draw();
+			if(following){
+				token.clear();
+				token.x = e.clientX - xOffset;
+				token.y = e.clientY - yOffset;
+				token.draw();
+			}
+			
 		});
 
 		boardCanvas.addEventListener("click", function(e){
-			console.log("click");
+			//determine where they are clicking
+			var clickX = e.clientX - xOffset - 0.1 * w;
+			var clickY = e.clientY - yOffset - 0.1 * h;
+			var col = Math.ceil(clickX / ((0.8 * w) / COLS));
+			dropToken(col);
+			console.log('x: ' + clickX + 'y: ' + clickY + 'col: ' + col);
 		});
 
 		boardCanvas.addEventListener("mouseout", function(e){
 
 		});
-
-		tokenCtx.fillStyle = '#000';
-		tokenCtx.fillRect(20, 20, 20, 20);
 
 		drawBoard();
 	}
@@ -87,6 +94,7 @@ function init() {
 
 function drawBoard(){
 	var len = h > w ? w : h;
+	token.radius = padPercent * len;
 
 	//Draw blue board
 	boardCtx.fillStyle = "#0066FF"
@@ -121,3 +129,51 @@ function clear(){
 	boardCtx.fillStyle = '#FFF';
 	boardCtx.fillRect(0, 0, w, h);
 }
+
+function dropToken(col){
+	following = false;
+	token.clear();
+	token.x = 0.1 * w + ((0.8 * w) / COLS) * (col - 0.5);
+	token.y = -20;
+	token.distanceToFall = 0.1 * h + ((0.8 * h) / ROWS) * (6 - 0.5) - token.y;
+	animationTimer = setInterval(animateToken, 5);
+}
+
+function animateToken(){
+	console.log('anim');
+	if(token.distanceToFall > 0){
+		token.clear();
+		if(token.distanceToFall < 5){
+			token.y += token.distanceToFall;
+			token.distanceToFall = 0;
+		}
+		else{
+			token.y += 5;
+			token.distanceToFall -= 5;
+		}
+		
+		token.draw();
+	}
+	else{
+		clearTimeout(animationTimer);
+		boardCtx.beginPath();
+		boardCtx.arc(token.x, token.y, token.radius, 0, Math.PI * 2, true);
+		boardCtx.closePath();
+		boardCtx.fillStyle = token.color;
+		boardCtx.fill();
+
+		token.color = token.color == 'red' ? 'yellow' : 'red';
+		following = true;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
