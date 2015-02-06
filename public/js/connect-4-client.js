@@ -38,19 +38,17 @@ var token = {
 	}
 };
 
-jQuery(document).ready(function(){
-	boardCanvas = document.getElementById("boardCanvas");
-	boardCanvas.width = $(window).width() * 0.75;
-	boardCanvas.height = $(window).height() * 0.5;
 
-	tokenCanvas = document.getElementById("tokenCanvas");
-	tokenCanvas.width = $(window).width() * 0.75;
-	tokenCanvas.height = $(window).height() * 0.5;
-
-	init();
-});
 
 function init() {
+	boardCanvas = document.getElementById("boardCanvas");
+	boardCanvas.width = 900;//$(window).width() * 0.75;
+	boardCanvas.height = Math.min(717, $(window).height() * 0.6);
+
+	tokenCanvas = document.getElementById("tokenCanvas");
+	tokenCanvas.width = 900;//$(window).width() * 0.75;
+	tokenCanvas.height = Math.min(717, $(window).height() * 0.6);
+
 	if(boardCanvas.getContext && tokenCanvas.getContext){
 		boardCtx = boardCanvas.getContext('2d');
 		tokenCtx = tokenCanvas.getContext('2d');
@@ -83,14 +81,7 @@ function init() {
 			var clickY = e.clientY - yOffset - 0.1 * h;
 			var col = Math.ceil(clickX / ((0.8 * w) / COLS)) - 1;
 			playMove(col);
-			console.log('x: ' + clickX + 'y: ' + clickY + 'col: ' + col);
 		});
-
-		boardCanvas.addEventListener("mouseout", function(e){
-
-		});
-
-		//restart();
 
 		drawBoard();
 	}
