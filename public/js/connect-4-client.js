@@ -177,9 +177,9 @@ function animateToken(){
 }
 
 function drawWinnerName(player){
-	tokenCtx.font = '40px serif';
-	tokenCtx.fillStyle = '#000';
-	tokenCtx.fillText(player + " wins!", w / 2 - 50, 0.05 * h);
+	boardCtx.font = '40px serif';
+	boardCtx.fillStyle = '#000';
+	boardCtx.fillText(player + " wins!", w / 2 - 50, 0.05 * h);
 }
 
 
