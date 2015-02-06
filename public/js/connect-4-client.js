@@ -8,6 +8,7 @@ var p1Score, p2Score;
 var xOffset, yOffset;
 
 var following = true;
+var animating = false;
 var animationTimer;
 
 var token = {
@@ -76,22 +77,24 @@ function init() {
 		});
 
 		boardCanvas.addEventListener("click", function(e){
-			if(!gameOver){
-				//determine where they are clicking
-				var clickX = e.clientX - xOffset - 0.1 * w;
-				var clickY = e.clientY - yOffset - 0.1 * h;
-				var col = Math.ceil(clickX / ((0.8 * w) / COLS)) - 1;
-				playMove(col);
+			if(!animating){
+				if(!gameOver){
+					animating = true;
+					//determine where they are clicking
+					var clickX = e.clientX - xOffset - 0.1 * w;
+					var clickY = e.clientY - yOffset - 0.1 * h;
+					var col = Math.ceil(clickX / ((0.8 * w) / COLS)) - 1;
+					playMove(col);
+				}
+				else{
+					clear();
+					token.clear();
+					drawBoard();
+					restart();
+					following = true;
+					gameOver = false;
+				}
 			}
-			else{
-				clear();
-				token.clear();
-				drawBoard();
-				restart();
-				following = true;
-				gameOver = false;
-			}
-			
 		});
 
 		drawBoard();
@@ -169,6 +172,7 @@ function animateToken(){
 
 		token.changeColor();
 		following = true;
+		animating = false;
 	}
 }
 
