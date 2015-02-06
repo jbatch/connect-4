@@ -16,7 +16,7 @@ var token = {
 	vx: 0,
 	vy: 0,
 	radius: 30,
-	color: 'red',
+	color: 'Red',
 	distanceToFall: 0,
 	draw: function(){
 		// console.log('x: ' + this.x + 'y: ' + this.y);
@@ -34,7 +34,7 @@ var token = {
 		tokenCtx.fillRect(0, 0, w, h);
 	},
 	changeColor: function(){
-		this.color = this.color == 'red' ? 'yellow' : 'red';
+		this.color = this.color == 'Red' ? 'Yellow' : 'Red';
 	}
 };
 
@@ -66,7 +66,7 @@ function init() {
 		p2Score = 0;
 
 		boardCanvas.addEventListener("mousemove", function(e){
-			if(following){
+			if(following && ! gameOver){
 				token.clear();
 				token.x = e.clientX - xOffset;
 				token.y = e.clientY - yOffset;
@@ -76,11 +76,22 @@ function init() {
 		});
 
 		boardCanvas.addEventListener("click", function(e){
-			//determine where they are clicking
-			var clickX = e.clientX - xOffset - 0.1 * w;
-			var clickY = e.clientY - yOffset - 0.1 * h;
-			var col = Math.ceil(clickX / ((0.8 * w) / COLS)) - 1;
-			playMove(col);
+			if(!gameOver){
+				//determine where they are clicking
+				var clickX = e.clientX - xOffset - 0.1 * w;
+				var clickY = e.clientY - yOffset - 0.1 * h;
+				var col = Math.ceil(clickX / ((0.8 * w) / COLS)) - 1;
+				playMove(col);
+			}
+			else{
+				clear();
+				token.clear();
+				drawBoard();
+				restart();
+				following = true;
+				gameOver = false;
+			}
+			
 		});
 
 		drawBoard();
@@ -116,14 +127,13 @@ function drawBoard(){
 
 	//draw Player scores
 	boardCtx.fillStyle = '#000';
-	boardCtx.font = '20px serif'
+	boardCtx.font = '20px serif';
 	boardCtx.fillText('Player 1: ' + p1Score, 0.1 * w, h - 20);
 	boardCtx.fillText('Player 2: ' + p2Score, 0.9 * w - 100, h - 20);
 }
 
 function clear(){
-	boardCtx.fillStyle = '#FFF';
-	boardCtx.fillRect(0, 0, w, h);
+	boardCtx.clearRect(0, 0, w, h);
 }
 
 function dropToken(col, row){
@@ -157,9 +167,15 @@ function animateToken(){
 		boardCtx.fillStyle = token.color;
 		boardCtx.fill();
 
-		token.color = token.color == 'red' ? 'yellow' : 'red';
+		token.changeColor();
 		following = true;
 	}
+}
+
+function drawWinnerName(player){
+	tokenCtx.font = '40px serif';
+	tokenCtx.fillStyle = '#000';
+	tokenCtx.fillText(player + " wins!", w / 2 - 50, 0.05 * h);
 }
 
 
