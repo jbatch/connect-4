@@ -32,6 +32,9 @@ var token = {
 	clear: function(){
 		tokenCtx.fillStyle = '#FFF';
 		tokenCtx.fillRect(0, 0, w, h);
+	},
+	changeColor: function(){
+		this.color = this.color == 'red' ? 'yellow' : 'red';
 	}
 };
 
@@ -78,14 +81,16 @@ function init() {
 			//determine where they are clicking
 			var clickX = e.clientX - xOffset - 0.1 * w;
 			var clickY = e.clientY - yOffset - 0.1 * h;
-			var col = Math.ceil(clickX / ((0.8 * w) / COLS));
-			dropToken(col);
+			var col = Math.ceil(clickX / ((0.8 * w) / COLS)) - 1;
+			playMove(col);
 			console.log('x: ' + clickX + 'y: ' + clickY + 'col: ' + col);
 		});
 
 		boardCanvas.addEventListener("mouseout", function(e){
 
 		});
+
+		//restart();
 
 		drawBoard();
 	}
@@ -130,17 +135,16 @@ function clear(){
 	boardCtx.fillRect(0, 0, w, h);
 }
 
-function dropToken(col){
+function dropToken(col, row){
 	following = false;
 	token.clear();
-	token.x = 0.1 * w + ((0.8 * w) / COLS) * (col - 0.5);
+	token.x = 0.1 * w + ((0.8 * w) / COLS) * (col + 0.5);
 	token.y = -20;
-	token.distanceToFall = 0.1 * h + ((0.8 * h) / ROWS) * (6 - 0.5) - token.y;
+	token.distanceToFall = 0.1 * h + ((0.8 * h) / ROWS) * (row + 0.5) - token.y;
 	animationTimer = setInterval(animateToken, 5);
 }
 
 function animateToken(){
-	console.log('anim');
 	if(token.distanceToFall > 0){
 		token.clear();
 		if(token.distanceToFall < 5){
@@ -166,6 +170,7 @@ function animateToken(){
 		following = true;
 	}
 }
+
 
 
 
