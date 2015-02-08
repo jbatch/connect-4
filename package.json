@@ -1,9 +1,14 @@
 {
-  "name": "connect-4",
-  "version": "0.0.1",
-  "description": "A clone of the game connect 4",
-  "dependencies": {
-    "express": "^4.11.2",
-    "bootstrap": "^3.3.2"
-  }
+	"author": "Josh Batchelor",
+  	"name": "connect-4",
+  	"version": "0.0.1",
+  	"description": "A clone of the game connect 4",
+  	"dependencies": {
+    	"express": "^4.11.2",
+    	"bootstrap": "^3.3.2"
+  	},
+  	"repository": {
+  		"type": "git",
+  		"url": "https://github.com/jbatch/connect-4"
+  	}
 }
