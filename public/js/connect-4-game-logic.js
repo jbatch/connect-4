@@ -10,25 +10,21 @@ function restart(){
 }
 
 function playMove(col){
-	console.log('playMove');
 	if(col > -1 && col < 7){
 		var row = getTopRow(col);
 		if(row != -1){
 			board[col][row] = token.color[0];
 			dropToken(col, row);
 			if(checkWin(col, row)){
-				if(token.color == "Red"){
-					p1Score++;
-				}
-				else{
-					p2Score++;
-				}
+				token.color == "Red" ? p1Score++ : p2Score++;
 				console.log('win!');
 				gameOver = true;
 				drawWinnerName(token.color);
 			}
-		}
+		} else {animating = false;}
 	}
+	else {animating = false;}
+
 }
 
 function getTopRow(col){
