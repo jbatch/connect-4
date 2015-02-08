@@ -2,6 +2,31 @@ h1, p {
 	text-align: center;
 }
 
+.bordered-col {
+	border: 1px solid black;
+	border-radius: 5px;
+	height: 40%;
+	margin: 1em;
+}
+
+.button-row > button, .button-row > a {
+	margin-top: 15%;
+	margin-left: 25%;
+	width: 50%;
+}
+
+.col-heading {
+	text-align: center;
+}
+
+#first-col {
+	margin-left: 12%;
+}
+
+#online-count {
+	font-size: 25px;
+}
+
 #game {
 	width: 100%;
 }
