@@ -17,6 +17,12 @@ function playMove(col){
 			board[col][row] = token.color[0];
 			dropToken(col, row);
 			if(checkWin(col, row)){
+				if(token.color == "Red"){
+					p1Score++;
+				}
+				else{
+					p2Score++;
+				}
 				console.log('win!');
 				gameOver = true;
 				drawWinnerName(token.color);

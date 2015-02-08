@@ -131,8 +131,8 @@ function drawBoard(){
 	//draw Player scores
 	boardCtx.fillStyle = '#000';
 	boardCtx.font = '20px serif';
-	boardCtx.fillText('Player 1: ' + p1Score, 0.1 * w, h - 20);
-	boardCtx.fillText('Player 2: ' + p2Score, 0.9 * w - 100, h - 20);
+	boardCtx.fillText('Red: ' + p1Score, 0.1 * w, h - 20);
+	boardCtx.fillText('Yellow: ' + p2Score, 0.9 * w - 100, h - 20);
 }
 
 function clear(){
