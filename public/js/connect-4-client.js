@@ -145,19 +145,19 @@ function dropToken(col, row){
 	token.x = 0.1 * w + ((0.8 * w) / COLS) * (col + 0.5);
 	token.y = -20;
 	token.distanceToFall = 0.1 * h + ((0.8 * h) / ROWS) * (row + 0.5) - token.y;
-	animationTimer = setInterval(animateToken, 5);
+	animationTimer = setInterval(animateToken, 10);
 }
 
 function animateToken(){
 	if(token.distanceToFall > 0){
 		token.clear();
-		if(token.distanceToFall < 5){
+		if(token.distanceToFall < 10){
 			token.y += token.distanceToFall;
 			token.distanceToFall = 0;
 		}
 		else{
-			token.y += 5;
-			token.distanceToFall -= 5;
+			token.y += 10;
+			token.distanceToFall -= 10;
 		}
 		
 		token.draw();
