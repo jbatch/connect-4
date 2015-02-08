@@ -7,6 +7,12 @@
 	<link rel="stylesheet" type="text/css" href="/css/connect-4.css">
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
 	<script type="text/javascript" src="bootstrap.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var r = Math.floor(Math.random() * 9999) + 1000
+			$('#name').val('guest' + r);
+		});
+	</script>
 </head>
 <body>
 	<div class="container" id ="game">
@@ -18,18 +24,18 @@
 			<hr>
 		</div>
 		<div class="row">
-			<div class='col-md-4'>
-				<input type="text" class="form-control">
+			<div class='col-sm-3' id="name-input">
+				<input type="text" class="form-control" value="guest1986" id="name">
 			</div>
-			<div class="col-md-4">
+			<div class="col-sm-3">
 				<button class="btn btn-default">Change Name</button>
 			</div>
-			<div class="col-md-4">
+			<div class="col-sm-3">
 				<p id="online-count">Online: 0</p>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-3 bordered-col" id="first-col">
+			<div class="col-sm-3 bordered-col" id="first-col">
 				<div class="col-heading">
 					<h2>VS CPU</h2>
 				</div>
@@ -46,7 +52,7 @@
 					<button class="btn btn-danger" disabled=true>Nightmare</button>
 				</div>
 			</div>
-			<div class="col-md-3 bordered-col">
+			<div class="col-sm-3 bordered-col">
 				<div class="col-heading">
 					<h2>VS Human Local</h2>
 				</div>
@@ -54,7 +60,7 @@
 					<a class="btn btn-success" href="game">Start</a>
 				</div>
 			</div>
-			<div class="col-md-3 bordered-col">
+			<div class="col-sm-3 bordered-col">
 				<div class="col-heading">
 					<h2>VS Human Internet</h2>
 				</div>
