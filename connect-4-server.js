@@ -1,15 +1,20 @@
 var express = require('express');
-var server = express();
-var http = require('http').Server(server);
+var app = express();
 
-server.use(express.static(__dirname + '/public'));
-server.use(express.static(__dirname + '/node_modules/bootstrap/dist/css'));
-server.use(express.static(__dirname + '/node_modules/bootstrap/dist/js'));
+app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/node_modules/bootstrap/dist/css'));
+app.use(express.static(__dirname + '/node_modules/bootstrap/dist/js'));
 
-server.get('/', function(req, res){
-	res.sendFile(__dirname + '/public/index.html');
+app.get('/game', function(req, res){
+	res.sendFile('public/game.html', {root: __dirname});
 });
 
-http.listen(3001, function(){
-	console.log('listening on port 3001');
- });
+app.get('/', function(req, res){
+	res.sendFile('public/index.html', {root: __dirname});
+});
+
+var port = 3001;
+
+var server = app.listen(3001, function(){
+	console.log('Server started on port ' + port);
+});
