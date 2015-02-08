@@ -20,15 +20,11 @@ var token = {
 	color: 'Red',
 	distanceToFall: 0,
 	draw: function(){
-		// console.log('x: ' + this.x + 'y: ' + this.y);
 		tokenCtx.beginPath();
 		tokenCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
 		tokenCtx.closePath();
 		tokenCtx.fillStyle = this.color;
 		tokenCtx.fill();
-
-		// tokenCtx.fillStyle = '#000';
-		// tokenCtx.fillRect(this.x, this.y, 10, 10);
 	},
 	clear: function(){
 		tokenCtx.fillStyle = '#FFF';
@@ -43,11 +39,11 @@ var token = {
 
 function init() {
 	boardCanvas = document.getElementById("boardCanvas");
-	boardCanvas.width = 900;//$(window).width() * 0.75;
+	boardCanvas.width = 900;
 	boardCanvas.height = Math.min(717, $(window).height() * 0.6);
 
 	tokenCanvas = document.getElementById("tokenCanvas");
-	tokenCanvas.width = 900;//$(window).width() * 0.75;
+	tokenCanvas.width = 900;
 	tokenCanvas.height = Math.min(717, $(window).height() * 0.6);
 
 	if(boardCanvas.getContext && tokenCanvas.getContext){

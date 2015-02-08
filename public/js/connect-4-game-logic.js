@@ -27,7 +27,6 @@ function playMove(col){
 				gameOver = true;
 				drawWinnerName(token.color);
 			}
-			//token.changeColor();
 		}
 	}
 }
