@@ -32,6 +32,13 @@ h1, p {
 	font-size: 25px;
 }
 
+.user {
+	width: 50%;
+	clear: both;
+	margin-left: 12%;
+	margin-bottom: 10%;
+}
+
 #game {
 	width: 100%;
 }

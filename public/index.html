@@ -7,10 +7,13 @@
 	<link rel="stylesheet" type="text/css" href="/css/connect-4.css">
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
 	<script type="text/javascript" src="bootstrap.min.js"></script>
+	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+	<script type="text/javascript" src="js/connect-4-multiplayer.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			var r = Math.floor(Math.random() * 9999) + 1000
 			$('#name').val('guest' + r);
+			init();
 		});
 	</script>
 </head>
@@ -26,7 +29,7 @@
 		<div class="row">
 			<div class='col-sm-3' id="name-input">
 				<input type="text" class="form-control" value="guest1986" id="name">
-			</div>
+      </div>
 			<div class="col-sm-3">
 				<button class="btn btn-default">Change Name</button>
 			</div>
@@ -64,8 +67,65 @@
 				<div class="col-heading">
 					<h2>VS Human Internet</h2>
 				</div>
+				<div id='users'></div>
 			</div>
 		</div>
+	</div>
+
+	<div class="modal" id="waitingModal" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+	  <div class="modal-dialog modal-sm">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Options</h4>
+	      </div>
+	      <div class="modal-body">
+	        <div class="container">
+	        	<div class="row">
+	        		
+	        	</div>
+	        	<div class="row">
+	        		
+	        	</div>
+	        	<div class="row">
+	        		
+	        	</div>
+	        </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" onclick="saveConfig()">Save changes</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<div class="modal" id="challengeModal" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+	  <div class="modal-dialog modal-sm">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Options</h4>
+	      </div>
+	      <div class="modal-body">
+	        <div class="container">
+	        	<div class="row">
+	        		
+	        	</div>
+	        	<div class="row">
+	        		
+	        	</div>
+	        	<div class="row">
+	        		
+	        	</div>
+	        </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" onclick="saveConfig()">Save changes</button>
+	      </div>
+	    </div>
+	  </div>
 	</div>
 </body>
 </html>
