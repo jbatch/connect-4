@@ -30,6 +30,11 @@ io.on('connection', function(socket){
 		io.emit('usersUpdate', getUsernames())
 	})
 
+	socket.on('changeName', function(username){
+		socket.username = username;
+		io.emit('usersUpdate', getUsernames());
+	});
+
 	socket.on('disconnect', function(){
 		console.log('disconnected');
 		socket.broadcast.emit('usersUpdate', getUsernames());

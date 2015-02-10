@@ -69,6 +69,11 @@ function declineChallenge(){
 	opponentName = null;
 }
 
+function changeName(){
+	username = $('#name').val();
+	socket.emit('changeName', username);
+}
+
 function test(){
 	socket.emit('test');
 }
