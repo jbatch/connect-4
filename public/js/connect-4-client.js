@@ -56,8 +56,6 @@ function getQueryVariable(variable)
 }
 
 function init() {
-	console.log('query: ' + getQueryVariable('c'));
-
 	boardCanvas = document.getElementById("boardCanvas");
 	boardCanvas.width = 900;
 	boardCanvas.height = Math.min(717, $(window).height() * 0.6);
@@ -70,9 +68,7 @@ function init() {
 
 	if(multiplayer){
 		opponentName = getQueryVariable('opponent');
-		console.log('You are in a multiplayer game');
 		playerColor = getQueryVariable('red') != false ? 'Red' : 'Yellow';
-		console.log('Your color is ' + playerColor);
 		redName = playerColor == 'Red' ? 'You' : opponentName;
 		yellowName = playerColor == 'Red' ? opponentName : 'You';
 		username = getQueryVariable('username');

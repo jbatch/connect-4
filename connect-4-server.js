@@ -23,7 +23,6 @@ io.on('connection', function(socket){
 
 
 	socket.on('join', function(user){
-		console.log(user);
 		socket.username = user.username;
 		socket.status = user.status;
 		io.emit('usersUpdate', getUsers())
@@ -35,7 +34,6 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('disconnect', function(){
-		console.log('disconnected');
 		socket.broadcast.emit('usersUpdate', getUsers());
 	});
 
@@ -49,7 +47,7 @@ io.on('connection', function(socket){
 			oppSock.emit('challenge', socket.username);
 		}
 		else{
-			console.log("ERROR - could not find opponent socket")
+			//Error
 		}
 	});
 
@@ -59,23 +57,21 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('declineChallenge', function(opponent){
-		console.log('declined ' + opponent);
 		var oppSock = getOpponentSocket(opponent);
 		if(!oppSock){
-			console.log('error');
+			//Error
 		}
 		oppSock.emit('declineChallenge');
 	});
 
 	socket.on('playMove', function(d){
-		console.log(d);
 		var oppSock = getOpponentSocket(d.opponent);
 		oppSock.emit('playMove', d.col);
 	});
 });
 
 server.listen(port, function(){
-	console.log('Server started on port ' + port);
+	console.log('listening on port ' + port)
 });
 
 

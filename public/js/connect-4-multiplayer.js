@@ -15,7 +15,6 @@ function init(){
 	})
 
 	socket.on('usersUpdate', function(users){
-		console.log(users);
 		$('#users').empty();
 		for(var i = 0; i < users.length; i++){
 			if(users[i].username != username){
@@ -28,25 +27,21 @@ function init(){
 	});
 
 	socket.on('challenge', function(opponent){
-		console.log('You have been challenged by ' + opponent);
 		showChallengeModal(opponent);
 	});
 
 	socket.on('acceptChallenge', function(opponent){
-		console.log('challenge accepted');
 		window.location.replace("game?multiplayer&opponent=" + 
 			opponent + '&username=' + username + '&red');
 	});
 
 	socket.on('declineChallenge', function(){
-		console.log('declined');
 		$('#waitingModal').modal('hide');
 		$('#declineModal').modal('show');
 	});
 }
 
 function getUserDiv(username, ready){
-	console.log(username + " " + ready);
 	return "<div class=\"row\">" +
 				"<div class=\"btn btn-success user\"" +
 	 			"onclick=\"challenge(this)\" " +
@@ -74,7 +69,6 @@ function acceptChallenge(){
 }
 
 function declineChallenge(){
-	console.log(opponentName)
 	socket.emit('declineChallenge', opponentName);
 	opponentName = null;
 }
@@ -82,12 +76,4 @@ function declineChallenge(){
 function changeName(){
 	username = $('#name').val();
 	socket.emit('changeName', username);
-}
-
-function test(){
-	socket.emit('test');
-}
-
-function newa(){
-	socket.emit('new');
 }
