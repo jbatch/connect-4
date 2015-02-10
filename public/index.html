@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 	<title>Connect 4</title>
@@ -19,17 +20,17 @@
 </head>
 <body>
 	<div class="container" id ="game">
-		<div class="row">
+		<div class="row" id="titleRow">
 			<h1>Connect 4</h1>
 		</div>
-		<div class="row">
+		<div class="row" id="subTitleRow">
 			<p>A clone of the game connect 4</p>
 			<hr>
 		</div>
-		<div class="row">
+		<div class="row" id="firstRow">
 			<div class='col-sm-3' id="name-input">
 				<input type="text" class="form-control" value="guest1986" id="name">
-      </div>
+      		</div>
 			<div class="col-sm-3">
 				<button class="btn btn-default" onclick="changeName()">Change Name</button>
 			</div>
@@ -37,7 +38,7 @@
 				<p id="online-count">Online: 0</p>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row" id="columnsRow">
 			<div class="col-sm-3 bordered-col" id="first-col">
 				<div class="col-heading">
 					<h2>VS CPU</h2>

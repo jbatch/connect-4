@@ -47,7 +47,7 @@ function init(){
 }
 
 function getUserDiv(username, ready){
-	return "<div class=\"row\">" +
+	return "<div class=\"row button-row\">" +
 				"<div class=\"btn btn-success user\"" +
 	 			"onclick=\"challenge(this)\" " +
 	 			(ready ? "" : " disabled=true") + ">" +

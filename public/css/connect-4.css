@@ -1,3 +1,11 @@
+html, body {
+	height: 100%;
+}
+
+.container {
+	height: 100%;
+}
+
 h1, p {
 	text-align: center;
 }
@@ -5,12 +13,13 @@ h1, p {
 .bordered-col {
 	border: 1px solid black;
 	border-radius: 5px;
-	height: 40%;
+	min-height: 60% !important;
 	margin: 1em;
+	overflow: auto;
 }
 
-.button-row > button, .button-row > a {
-	margin-top: 15%;
+.button-row > button, .button-row > a, .button-row > div {
+	margin-top: calc((100% - (5 * 32px))/5);
 	margin-left: 25%;
 	width: 50%;
 }
@@ -61,4 +70,22 @@ h1, p {
 	position: absolute;
 	left: calc(50% - 450px);
 	background: transparent;
+}
+
+#titleRow {
+	min-height: 69px;
+	height: 5%;
+}
+
+#subTitleRow {
+	min-height: 71px;
+	height: 5%;
+}
+
+#firstRow {
+	height: 5%;
+}
+
+#columnsRow {
+	height: 85%;
 }
