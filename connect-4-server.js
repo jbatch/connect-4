@@ -39,6 +39,30 @@ io.on('connection', function(socket){
 		socket.username = username;
 	});
 
+	socket.on('challenge', function(opponent){
+		var oppSock = getOpponentSocket(opponent);
+		if(oppSock){
+			oppSock.emit('challenge', socket.username);
+		}
+		else{
+			console.log("ERROR - could not find opponent socket")
+		}
+	});
+
+	socket.on('acceptChallenge', function(opponent){
+		var oppSock = getOpponentSocket(opponent);
+		oppSock.emit('acceptChallenge', opponent);
+	});
+
+	socket.on('declineChallenge', function(opponent){
+		console.log('declined ' + opponent);
+		var oppSock = getOpponentSocket(opponent);
+		if(!oppSock){
+			console.log('error');
+		}
+		oppSock.emit('declineChallenge');
+	});
+
 	socket.on('test', function(){
 		var c = findClientsSocket();
 		console.log('clients ' + getUsernames());
@@ -84,4 +108,16 @@ function getUsernames(){
 	}
 
 	return usernames;
+}
+
+function getOpponentSocket(username){
+	var clients = findClientsSocket();
+	var oppSock;
+	for(var i = 0; i < clients.length; i++){
+		if(clients[i].username == username){
+			oppSock = clients[i];
+		}
+	}
+
+	return oppSock;
 }

@@ -4,12 +4,17 @@ var padPercent = 0.055;
 var boardCanvas, tokenCanvas;
 var boardCtx, tokenCtx;
 var h, w;
-var p1Score, p2Score;
+var redScore, yellowScore;
 var xOffset, yOffset;
 
 var following = true;
 var animating = false;
 var animationTimer;
+
+//For Multiplayer
+var redName, yellowName;
+var username;
+var multiplayer = false;
 
 var token = {
 	x: 0,
@@ -35,9 +40,20 @@ var token = {
 	}
 };
 
-
+//http://css-tricks.com/snippets/javascript/get-url-variables/
+function getQueryVariable(variable)
+{
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+}
 
 function init() {
+	console.log('query: ' + getQueryVariable('c'));
 	boardCanvas = document.getElementById("boardCanvas");
 	boardCanvas.width = 900;
 	boardCanvas.height = Math.min(717, $(window).height() * 0.6);
@@ -45,6 +61,10 @@ function init() {
 	tokenCanvas = document.getElementById("tokenCanvas");
 	tokenCanvas.width = 900;
 	tokenCanvas.height = Math.min(717, $(window).height() * 0.6);
+
+	if(multiplayer){
+
+	}
 
 	if(boardCanvas.getContext && tokenCanvas.getContext){
 		boardCtx = boardCanvas.getContext('2d');
@@ -59,8 +79,8 @@ function init() {
 		h = boardCanvas.height;
 		w = boardCanvas.width;
 
-		p1Score = 0;
-		p2Score = 0;
+		redScore = 0;
+		yellowScore = 0;
 
 		boardCanvas.addEventListener("mousemove", function(e){
 			if(following && ! gameOver){
@@ -127,8 +147,8 @@ function drawBoard(){
 	//draw Player scores
 	boardCtx.fillStyle = '#000';
 	boardCtx.font = '20px serif';
-	boardCtx.fillText('Red: ' + p1Score, 0.1 * w, h - 20);
-	boardCtx.fillText('Yellow: ' + p2Score, 0.9 * w - 100, h - 20);
+	boardCtx.fillText('Red: ' + redScore, 0.1 * w, h - 20);
+	boardCtx.fillText('Yellow: ' + yellowScore, 0.9 * w - 100, h - 20);
 }
 
 function clear(){

@@ -1,5 +1,6 @@
 var socket;
 var username;
+var opponentName;
 
 function init(){
 	socket = io();
@@ -22,6 +23,23 @@ function init(){
 		}
 		$('#online-count').text('Online: ' + users.length);
 	});
+
+	socket.on('challenge', function(opponent){
+		console.log('You have been challenged by ' + opponent);
+		showChallengeModal(opponent);
+	});
+
+	socket.on('acceptChallenge', function(opponent){
+		console.log('challenge accepted');
+		window.location.replace("game?multiplayer=true&opponent=" + opponent);
+	});
+
+	socket.on('declineChallenge', function(){
+		console.log('declined');
+		$('#waitingModal').modal('hide');
+
+		$('#declineModal').modal('show');
+	});
 }
 
 function getUserDiv(username){
@@ -30,6 +48,24 @@ function getUserDiv(username){
 
 function challenge(opponent){
 	socket.emit('challenge', opponent.innerHTML);
+	$('#waitingModal').modal('show');
+}
+
+function showChallengeModal(opponent){
+	$('#challengeText').text('You have been challenged by ' + opponent);
+	$('#challengeModal').modal('show');
+	opponentName = opponent
+}
+
+function acceptChallenge(){
+	socket.emit('acceptChallenge', opponentName);
+	window.location.replace("game?multiplayer=true&opponent=" + opponentName);
+}
+
+function declineChallenge(){
+	console.log(opponentName)
+	socket.emit('declineChallenge', opponentName);
+	opponentName = null;
 }
 
 function test(){
