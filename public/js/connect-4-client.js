@@ -78,7 +78,10 @@ function init() {
 		username = getQueryVariable('username');
 		socket = io();
 
-		socket.emit('join', username);
+		socket.emit('join', {
+			username: username,
+			status: 'busy'
+		});
 
 		socket.on('playMove', function(col){
 			playMove(col);

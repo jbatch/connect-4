@@ -5,10 +5,12 @@ var opponentName;
 function init(){
 	socket = io();
 	username = $('#name').val();
-	socket.emit('join', username);
+	socket.emit('join', {
+		username: username,
+		status: 'ready'
+	});
 
 	socket.on('sound-off', function(){
-		console.log('sound-off')
 		socket.emit('sound-off-ack', username);
 	})
 
@@ -16,8 +18,9 @@ function init(){
 		console.log(users);
 		$('#users').empty();
 		for(var i = 0; i < users.length; i++){
-			if(users[i] != username){
-				$('#users').append(getUserDiv(users[i]));
+			if(users[i].username != username){
+				$('#users').append(getUserDiv(users[i].username, 
+					users[i].status == 'ready'));
 			}
 			
 		}
@@ -42,8 +45,15 @@ function init(){
 	});
 }
 
-function getUserDiv(username){
-	return "<div class=\"row\"><div class=\"btn btn-success user\" onclick=\"challenge(this)\">" + username + "</div></div>";
+function getUserDiv(username, ready){
+	console.log(username + " " + ready);
+	return "<div class=\"row\">" +
+				"<div class=\"btn btn-success user\"" +
+	 			"onclick=\"challenge(this)\" " +
+	 			(ready ? "" : " disabled=true") + ">" +
+	 			username + 
+	 			"</div>" +
+	 		"</div>";
 }
 
 function challenge(opponent){

@@ -21,23 +21,22 @@ io.on('connection', function(socket){
 
 	socket.emit('sound-off');
 
-	//io.emit('usersUpdate', getUsernames());
 
-	socket.on('join', function(username){
-		console.log(username + ' connected');
-		socket.username = username;
-		//io.emit('usersOnlineUpdate', usersOnline);
-		io.emit('usersUpdate', getUsernames())
+	socket.on('join', function(user){
+		console.log(user);
+		socket.username = user.username;
+		socket.status = user.status;
+		io.emit('usersUpdate', getUsers())
 	})
 
 	socket.on('changeName', function(username){
 		socket.username = username;
-		io.emit('usersUpdate', getUsernames());
+		io.emit('usersUpdate', getUsers());
 	});
 
 	socket.on('disconnect', function(){
 		console.log('disconnected');
-		socket.broadcast.emit('usersUpdate', getUsernames());
+		socket.broadcast.emit('usersUpdate', getUsers());
 	});
 
 	socket.on('sound-off-ack', function(username){
@@ -73,16 +72,6 @@ io.on('connection', function(socket){
 		var oppSock = getOpponentSocket(d.opponent);
 		oppSock.emit('playMove', d.col);
 	});
-
-	socket.on('test', function(){
-		var c = findClientsSocket();
-		console.log('clients ' + getUsernames());
-	})
-
-	socket.on('new', function(){
-		console.log('new');
-		io.emit('sound-off');
-	})
 });
 
 server.listen(port, function(){
@@ -110,12 +99,15 @@ function findClientsSocket(roomId, namespace) {
     return res;
 }
 
-function getUsernames(){
+function getUsers(){
 	var usernames = [];
 	var clients = findClientsSocket();
 
 	for(var i = 0; i < clients.length; i++){
-		usernames.push(clients[i].username);
+		usernames.push({
+			username: clients[i].username,
+			status: clients[i].status
+		});
 	}
 
 	return usernames;
