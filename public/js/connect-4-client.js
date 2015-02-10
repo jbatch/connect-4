@@ -82,6 +82,8 @@ function init() {
 		socket.on('playMove', function(col){
 			playMove(col);
 		});
+
+		$('#title').attr("href", "/?username=" + username);
 	}
 
 	if(boardCanvas.getContext && tokenCanvas.getContext){
