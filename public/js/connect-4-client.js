@@ -113,34 +113,33 @@ function init() {
 		});
 
 		boardCanvas.addEventListener("click", function(e){
-			if(playerColor == token.color || !multiplayer){
-				if(!animating){
-					if(!gameOver){
-						animating = true;
-						//determine where they are clicking
-						var clickX = e.clientX - xOffset - 0.1 * w;
-						var clickY = e.clientY - yOffset - 0.1 * h;
-						var col = Math.ceil(clickX / ((0.8 * w) / COLS)) - 1;
-						playMove(col);
-						if(multiplayer){
-							socket.emit('playMove', {
-								opponent: opponentName,
-								col: col
-							});
-						}
-					}
-					else{
-						clear();
-						token.clear();
-						drawBoard();
-						restart();
-						following = true;
-						gameOver = false;
+		if(!animating){
+			if(!gameOver){
+				if(playerColor == token.color || !multiplayer){
+					animating = true;
+					//determine where they are clicking
+					var clickX = e.clientX - xOffset - 0.1 * w;
+					var clickY = e.clientY - yOffset - 0.1 * h;
+					var col = Math.ceil(clickX / ((0.8 * w) / COLS)) - 1;
+					playMove(col);
+					if(multiplayer){
+						socket.emit('playMove', {
+							opponent: opponentName,
+							col: col
+						});
 					}
 				}
 			}
-		});
-
+			else{
+				clear();
+				token.clear();
+				drawBoard();
+				restart();
+				following = true;
+				gameOver = false;
+			}
+		}
+	});
 		drawBoard();
 	}
 	
@@ -224,7 +223,7 @@ function drawWinnerName(player){
 	boardCtx.font = '40px serif';
 	boardCtx.fillStyle = '#000';
 	var winner = player == "Red" ? redName : yellowName;
-	boardCtx.fillText(winner + " wins!", w / 2 - 50, 0.05 * h);
+	boardCtx.fillText(winner + " win!", w / 2 - 50, 0.05 * h);
 }
 
 
