@@ -42,6 +42,7 @@ function init(){
 
 	if(getQueryVariable('username') != false){
 		$('#name').val(getQueryVariable('username'));
+		changeName();
 	}
 }
 
