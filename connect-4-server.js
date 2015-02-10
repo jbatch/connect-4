@@ -51,7 +51,7 @@ io.on('connection', function(socket){
 
 	socket.on('acceptChallenge', function(opponent){
 		var oppSock = getOpponentSocket(opponent);
-		oppSock.emit('acceptChallenge', opponent);
+		oppSock.emit('acceptChallenge', socket.username);
 	});
 
 	socket.on('declineChallenge', function(opponent){
@@ -61,6 +61,12 @@ io.on('connection', function(socket){
 			console.log('error');
 		}
 		oppSock.emit('declineChallenge');
+	});
+
+	socket.on('playMove', function(d){
+		console.log(d);
+		var oppSock = getOpponentSocket(d.opponent);
+		oppSock.emit('playMove', d.col);
 	});
 
 	socket.on('test', function(){

@@ -31,13 +31,13 @@ function init(){
 
 	socket.on('acceptChallenge', function(opponent){
 		console.log('challenge accepted');
-		window.location.replace("game?multiplayer=true&opponent=" + opponent);
+		window.location.replace("game?multiplayer&opponent=" + 
+			opponent + '&username=' + username + '&red');
 	});
 
 	socket.on('declineChallenge', function(){
 		console.log('declined');
 		$('#waitingModal').modal('hide');
-
 		$('#declineModal').modal('show');
 	});
 }
@@ -52,14 +52,15 @@ function challenge(opponent){
 }
 
 function showChallengeModal(opponent){
+	opponentName = opponent;
 	$('#challengeText').text('You have been challenged by ' + opponent);
 	$('#challengeModal').modal('show');
-	opponentName = opponent
 }
 
 function acceptChallenge(){
 	socket.emit('acceptChallenge', opponentName);
-	window.location.replace("game?multiplayer=true&opponent=" + opponentName);
+	window.location.replace("game?multiplayer&opponent=" + opponentName
+	 + '&username=' + username);
 }
 
 function declineChallenge(){

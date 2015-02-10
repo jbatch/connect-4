@@ -5,6 +5,7 @@ var boardCanvas, tokenCanvas;
 var boardCtx, tokenCtx;
 var h, w;
 var redScore, yellowScore;
+var redName = 'Red', yellowName = 'Yellow';
 var xOffset, yOffset;
 
 var following = true;
@@ -12,9 +13,11 @@ var animating = false;
 var animationTimer;
 
 //For Multiplayer
-var redName, yellowName;
+var multiplayer;
+var playerColor;
+var socket;
+var opponentName;
 var username;
-var multiplayer = false;
 
 var token = {
 	x: 0,
@@ -54,6 +57,7 @@ function getQueryVariable(variable)
 
 function init() {
 	console.log('query: ' + getQueryVariable('c'));
+
 	boardCanvas = document.getElementById("boardCanvas");
 	boardCanvas.width = 900;
 	boardCanvas.height = Math.min(717, $(window).height() * 0.6);
@@ -62,8 +66,23 @@ function init() {
 	tokenCanvas.width = 900;
 	tokenCanvas.height = Math.min(717, $(window).height() * 0.6);
 
-	if(multiplayer){
+	multiplayer = getQueryVariable('multiplayer') != false;
 
+	if(multiplayer){
+		opponentName = getQueryVariable('opponent');
+		console.log('You are in a multiplayer game');
+		playerColor = getQueryVariable('red') != false ? 'Red' : 'Yellow';
+		console.log('Your color is ' + playerColor);
+		redName = playerColor == 'Red' ? 'You' : opponentName;
+		yellowName = playerColor == 'Red' ? opponentName : 'You';
+		username = getQueryVariable('username');
+		socket = io();
+
+		socket.emit('join', username);
+
+		socket.on('playMove', function(col){
+			playMove(col);
+		});
 	}
 
 	if(boardCanvas.getContext && tokenCanvas.getContext){
@@ -83,32 +102,41 @@ function init() {
 		yellowScore = 0;
 
 		boardCanvas.addEventListener("mousemove", function(e){
-			if(following && ! gameOver){
-				token.clear();
-				token.x = e.clientX - xOffset;
-				token.y = e.clientY - yOffset;
-				token.draw();
+			if(token.color == playerColor || !multiplayer){
+				if(following && ! gameOver){
+					token.clear();
+					token.x = e.clientX - xOffset;
+					token.y = e.clientY - yOffset;
+					token.draw();
+				}
 			}
-			
 		});
 
 		boardCanvas.addEventListener("click", function(e){
-			if(!animating){
-				if(!gameOver){
-					animating = true;
-					//determine where they are clicking
-					var clickX = e.clientX - xOffset - 0.1 * w;
-					var clickY = e.clientY - yOffset - 0.1 * h;
-					var col = Math.ceil(clickX / ((0.8 * w) / COLS)) - 1;
-					playMove(col);
-				}
-				else{
-					clear();
-					token.clear();
-					drawBoard();
-					restart();
-					following = true;
-					gameOver = false;
+			if(playerColor == token.color || !multiplayer){
+				if(!animating){
+					if(!gameOver){
+						animating = true;
+						//determine where they are clicking
+						var clickX = e.clientX - xOffset - 0.1 * w;
+						var clickY = e.clientY - yOffset - 0.1 * h;
+						var col = Math.ceil(clickX / ((0.8 * w) / COLS)) - 1;
+						playMove(col);
+						if(multiplayer){
+							socket.emit('playMove', {
+								opponent: opponentName,
+								col: col
+							});
+						}
+					}
+					else{
+						clear();
+						token.clear();
+						drawBoard();
+						restart();
+						following = true;
+						gameOver = false;
+					}
 				}
 			}
 		});
@@ -147,8 +175,8 @@ function drawBoard(){
 	//draw Player scores
 	boardCtx.fillStyle = '#000';
 	boardCtx.font = '20px serif';
-	boardCtx.fillText('Red: ' + redScore, 0.1 * w, h - 20);
-	boardCtx.fillText('Yellow: ' + yellowScore, 0.9 * w - 100, h - 20);
+	boardCtx.fillText(redName + ': ' + redScore, 0.1 * w, h - 20);
+	boardCtx.fillText(yellowName + ': ' + yellowScore, 0.9 * w - 100, h - 20);
 }
 
 function clear(){
@@ -195,7 +223,8 @@ function animateToken(){
 function drawWinnerName(player){
 	boardCtx.font = '40px serif';
 	boardCtx.fillStyle = '#000';
-	boardCtx.fillText(player + " wins!", w / 2 - 50, 0.05 * h);
+	var winner = player == "Red" ? redName : yellowName;
+	boardCtx.fillText(winner + " wins!", w / 2 - 50, 0.05 * h);
 }
 
 
