@@ -5,6 +5,8 @@ var io = require('socket.io')(server);
 
 var port = 3001;
 
+var updateTimer = setInterval(updateUsers, 1000);
+
 app.use(express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use(express.static(__dirname + '/node_modules/bootstrap/dist/js'));
@@ -21,11 +23,10 @@ io.on('connection', function(socket){
 
 	socket.emit('sound-off');
 
-
 	socket.on('join', function(user){
 		socket.username = user.username;
 		socket.status = user.status;
-		io.emit('usersUpdate', getUsers())
+		io.emit('usersUpdate', getUsers());
 	})
 
 	socket.on('changeName', function(username){
@@ -117,6 +118,9 @@ function getOpponentSocket(username){
 			oppSock = clients[i];
 		}
 	}
-
 	return oppSock;
+}
+
+function updateUsers(){
+	io.emit('usersUpdate', getUsers());
 }

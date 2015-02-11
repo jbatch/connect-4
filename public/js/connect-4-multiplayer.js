@@ -15,6 +15,7 @@ function init(){
 	})
 
 	socket.on('usersUpdate', function(users){
+		console.log('Got user update');
 		$('#users').empty();
 		for(var i = 0; i < users.length; i++){
 			if(users[i].username != username){
@@ -47,7 +48,7 @@ function init(){
 }
 
 function getUserDiv(username, ready){
-	return "<div class=\"row button-row\">" +
+	return "<div class=\"row button-row  \">" +
 				"<div class=\"btn btn-success user\"" +
 	 			"onclick=\"challenge(this)\" " +
 	 			(ready ? "" : " disabled=true") + ">" +
